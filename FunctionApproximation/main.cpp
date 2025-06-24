@@ -9,9 +9,14 @@ float cos_approx(float x);
 void test_sin();
 void test_cos();
 
+float sqrt_approx(float x);
+void test_sqrt_approx();
+
 int main() {
     test_sin();
     test_cos();
+
+    test_sqrt_approx();
 
     return 0;
 }
@@ -93,4 +98,35 @@ void test_cos() {
 
         cur_angle += angle_step;
     }
+}
+
+// Straight Newton-Raphson.
+float sqrt_approx(float x) {
+    assert(x >= 0);
+
+    // The order of the difference should be lesser than the order of the operand.
+    const float epsilon = (x < 1) ? (x / 1000.0f) : 1e-3f;
+
+    float guess = x;
+    while (std::fabs(guess * guess - x) > epsilon) {
+        const float f_guess = guess * guess - x; // f(guess), f(x) = x^2 - a.
+        const float df_guess = 2 * guess; // f'(guess), f'(x) = 2x.
+        const float inv_df_guess = 1 / df_guess;
+
+        guess = guess - f_guess * inv_df_guess;
+    }
+
+    return guess;
+}
+
+void test_sqrt_approx() {
+    const float value = 2.0f;
+    //const float value = 0.00003240017f;
+    //const float value = 150654.0f;
+
+    const float res_native = std::sqrt(value);
+    const float res_approx = sqrt_approx(value);
+
+    std::cout << std::format("sqrt_native({})={}\n", value, res_native);
+    std::cout << std::format("sqrt_approx({})={}\n\n", value, res_approx);
 }
