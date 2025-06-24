@@ -7,4 +7,4 @@ Custom approximations of cos, sin, sqrt.
 - sqrt - Newton-Raphson.
 
 ## Documentation
-See /docs for derivations and some theory behind the Maclaurin series and Newton-Raphson.
+/docs contains Mathcad projects with experiments, derivations and etc. for the Maclaurin series and Newton-Raphson.
